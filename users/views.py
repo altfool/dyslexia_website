@@ -7,7 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic.edit import FormView
 from .models import Upload
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, UploadForm
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
+import zipfile
 
 # Create your views here.
 
@@ -92,8 +93,31 @@ class UploadView(FormView):
 
 @login_required
 def download(request):
+    response = None
+    if request.method == 'POST':
+        checked_id = request.POST.getlist('checks')
+        # print(type(checked_id))
+        print(checked_id)
+        if checked_id == []:
+            messages.warning(request, "You Haven't Chose Any Files!")
+        else:
+            response = HttpResponse(content_type='application/zip')
+            # print(response)
+            zip_file = zipfile.ZipFile(response, 'w')
+            for idx in checked_id:
+                obj = Upload.objects.get(pk=idx).brain_file
+                print(obj.name)
+                zip_file.write(obj.path)
+            response['Content-Disposition'] = 'attachment; filename=dyslexia_data'
+            zip_file.close()
+            messages.success(request, "Download Successfully!")
+            # response =response.streaming
+            return response
+        # return redirect('users-download')
+
     context = {
-        'data': Upload.objects.all().order_by('-date_uploaded')
+        'data': Upload.objects.all().order_by('-date_uploaded'),
+        'datalink': response,
     }
     return render(request, 'users/download.html', context)
 

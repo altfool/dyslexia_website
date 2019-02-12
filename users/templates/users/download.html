@@ -1,34 +1,53 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block datafile %}
+{% if datalink %}
+<!--<meta http-equiv="refresh" content="2; URL={{ datalink }}">-->
+{% endif %}
+{% endblock datafile%}
+
 {% block content %}
 <div class="container">
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <!--<th><input id='checkAll' type="checkbox"/></th>-->
-            <th scope="col">#</th>
-            <th scope="col">File_Name</th>
-            <th scope="col">Sample_Age</th>
-            <th scope="col">Size/bytes</th>
-            <th scope="col">Date_upladed</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Download</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for sdata in data %}
-        <tr>
-            <td scope="row">{{ forloop.counter }}</td>
-            <!--<th scope="row">{{ sdata.id }}</th>-->
-            <td>{{ sdata.name }}</td>
-            <td>{{ sdata.sample_age }}</td>
-            <td>{{ sdata.size }}</td>
-            <td>{{ sdata.date_uploaded | date:"F d Y" }}</td>
-            <td>{{ sdata.owner }}</td>
-            <td><a href="{{ sdata.brain_file.url }}">download</a></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <form method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <!--<th><input class="check" id="checkAll" type="checkbox"/></th>-->
+                <th><input type="checkbox" class="checkbox" id="all" value=""></th>
+                <th scope="col">#</th>
+                <th scope="col">File_Name</th>
+                <th scope="col">Sample_Age</th>
+                <th scope="col">Size/bytes</th>
+                <th scope="col">Date_upladed</th>
+                <th scope="col">Owner</th>
+                <th scope="col">Download</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sdata in data %}
+            <tr>
+                <td><input type="checkbox" class="check rows" name="checks" value="{{sdata.id}}"></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ sdata.name }}</td>
+                <td>{{ sdata.sample_age }}</td>
+                <td>{{ sdata.size }}</td>
+                <td>{{ sdata.date_uploaded | date:"F d Y" }}</td>
+                <td>{{ sdata.owner }}</td>
+                <td><a href="{{ sdata.brain_file.url }}">download</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Collect</button>
+        </div>
+    </form>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'users/check_all.js' %}"></script>
+{% endblock %}
