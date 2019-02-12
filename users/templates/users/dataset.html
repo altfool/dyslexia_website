@@ -1,0 +1,31 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">File_Name</th>
+            <th scope="col">Sample_Age</th>
+            <th scope="col">Size/bytes</th>
+            <th scope="col">Date_upladed</th>
+            <th scope="col">Owner</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sdata in data %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <!--<th scope="row">{{ sdata.id }}</th>-->
+            <td>{{ sdata.name }}</td>
+            <td>{{ sdata.sample_age }}</td>
+            <td>{{ sdata.size }}</td>
+            <td>{{ sdata.date_uploaded }}</td>
+            <td>{{ sdata.owner }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

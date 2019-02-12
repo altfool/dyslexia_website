@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import FormView
+from .models import Upload
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, UploadForm
+from django.http import FileResponse
 
 # Create your views here.
 
@@ -13,9 +17,7 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request,
-                             "Congratulations. Account created for you: {}.\nYou are now able to log in.".format(
-                                 username))
+            messages.success(request, "Congratulations. Account created for you: {}.\nYou are now able to log in.".format(username))
             return redirect('users-login')
     else:
         form = UserRegisterForm()
@@ -41,3 +43,57 @@ def profile(request):
         'p_form': p_form,
     }
     return render(request, 'users/profile.html', context)
+
+@login_required
+def dataset(request):
+    context = {
+        'data': Upload.objects.filter(owner=request.user).order_by('-date_uploaded')
+    }
+    return render(request, 'users/dataset.html', context)
+
+# @login_required
+# def upload(request):
+#     if request.method == 'POST':
+#         form = UploadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             request.user.upload.name = request.FILES.name
+#             request.user.upload.size = request.FILES.size
+#             request.user.upload.owner = request.user
+#             messages.success(request, "Congratulations. Data uploaded successfully!")
+#             return redirect('users-upload')
+#     else:
+#         form = UploadForm()
+#
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'users/upload.html', context)
+
+
+class UploadView(FormView):
+    form_class = UploadForm
+    template_name = 'users/upload.html'
+    # success_url = '/home'
+    success_url = reverse_lazy('users-dataset')
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('brain_file')
+        if form.is_valid():
+            for f in files:
+                ...  # Do something with each file.
+                obj = Upload(name=f.name, size=f.size, brain_file=f, owner=self.request.user)
+                obj.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+@login_required
+def download(request):
+    context = {
+        'data': Upload.objects.all().order_by('-date_uploaded')
+    }
+    return render(request, 'users/download.html', context)
+
