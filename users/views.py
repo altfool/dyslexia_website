@@ -100,6 +100,7 @@ def download(request):
         print(checked_id)
         if checked_id == []:
             messages.warning(request, "You Haven't Chose Any Files!")
+            return redirect('users-download')
         else:
             response = HttpResponse(content_type='application/zip')
             # print(response)
@@ -107,17 +108,16 @@ def download(request):
             for idx in checked_id:
                 obj = Upload.objects.get(pk=idx).brain_file
                 print(obj.name)
-                zip_file.write(obj.path)
+                zip_file.write(obj.path, obj.name)
             response['Content-Disposition'] = 'attachment; filename=dyslexia_data'
             zip_file.close()
-            messages.success(request, "Download Successfully!")
+            # messages.success(request, "Download Successfully!")
             # response =response.streaming
             return response
         # return redirect('users-download')
 
     context = {
         'data': Upload.objects.all().order_by('-date_uploaded'),
-        'datalink': response,
     }
     return render(request, 'users/download.html', context)
 

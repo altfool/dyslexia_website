@@ -8,46 +8,113 @@
 {% endif %}
 {% endblock datafile%}
 
+{% block header %}
+<!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<script type="text/javascript">
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     }
+     else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+
+function unselectAll() {
+    var checkboxes = document.getElementsByTagName('input');
+    for (var i = 0; i < checkboxes.length; i++) {
+         console.log(i);
+         if (checkboxes[i].type == 'checkbox') {
+             checkboxes[i].checked = false;
+         }
+     }
+}
+
+$(document).ready(function() {
+    <!--alert("hello world");-->
+    $('#example').DataTable({
+              order: [[1, 'asc']],
+             "columnDefs": [
+                { "orderable": false, "targets": [0,7] }
+             ]
+        <!--"columns": [-->
+                    <!--{ "orderable": false },-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--{ "orderable": false }-->
+<!--]-->
+    });
+} );
+
+
+</script>
+{% endblock header %}
+
 {% block content %}
 <div class="container">
     <form method="POST">
         {% csrf_token %}
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <!--<th><input class="check" id="checkAll" type="checkbox"/></th>-->
-                <th><input type="checkbox" class="checkbox" id="all" value=""></th>
-                <th scope="col">#</th>
-                <th scope="col">File_Name</th>
-                <th scope="col">Sample_Age</th>
-                <th scope="col">Size/bytes</th>
-                <th scope="col">Date_upladed</th>
-                <th scope="col">Owner</th>
-                <th scope="col">Download</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for sdata in data %}
-            <tr>
-                <td><input type="checkbox" class="check rows" name="checks" value="{{sdata.id}}"></td>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ sdata.name }}</td>
-                <td>{{ sdata.sample_age }}</td>
-                <td>{{ sdata.size }}</td>
-                <td>{{ sdata.date_uploaded | date:"F d Y" }}</td>
-                <td>{{ sdata.owner }}</td>
-                <td><a href="{{ sdata.brain_file.url }}">download</a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Collect</button>
+            <button class="btn btn-outline-info" type="button" name="clear" onclick="unselectAll()">Clear All</button>
+            <button class="btn btn-outline-info" type="submit" name="download" value="">Download</button>
+        </div>
+        <div>
+            <table id="example" class="table table-bordered table-striped" style="width:100%">
+                <thead class="thead-dark">
+                <tr>
+                    <!--<th><input class="check" id="checkAll" type="checkbox"/></th>-->
+                    <th><input type="checkbox" class="checkbox mycheckbox all" value="" onclick="checkAll(this)"
+                               autocomplete="off"></th>
+                    <th scope="col">#</th>
+                    <th scope="col">File_Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Size/bytes</th>
+                    <th scope="col">Date_upladed</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Download</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sdata in data %}
+                <tr style="height:10px">
+                    <td><input type="checkbox" class="check rows" id="chk{{sdata.id}}" name="checks"
+                               value="{{sdata.id}}">
+                    </td>
+
+                    <td><label for="chk{{sdata.id}}">{{ forloop.counter }}</label></td>
+                    <td><label for="chk{{sdata.id}}">{{ sdata.name }}</label></td>
+                    <td><label for="chk{{sdata.id}}">{{ sdata.sample_age }}</label></td>
+                    <td><label for="chk{{sdata.id}}">{{ sdata.size }}</label></td>
+                    <td><label for="chk{{sdata.id}}">{{ sdata.date_uploaded | date:"m-d Y" }}</label></td>
+                    <td><label for="chk{{sdata.id}}">{{ sdata.owner }}</label></td>
+
+                    <td><a href="{{ sdata.brain_file.url }}">download</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </form>
 </div>
 {% endblock content %}
 
-{% block scripts %}
-<script type="text/javascript" src="{% static 'users/check_all.js' %}"></script>
-{% endblock %}

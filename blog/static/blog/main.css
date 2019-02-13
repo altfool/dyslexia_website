@@ -91,3 +91,7 @@ a.article-title:hover {
 .adjust-font-size {
   font-size: 2vm;
 }
+
+td label {
+    display: block;
+}
