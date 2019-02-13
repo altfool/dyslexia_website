@@ -39,7 +39,7 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-secondary fixed-top">
         <div class="container">
-            <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+            <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Dyslexia Data Consortium</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -69,7 +69,8 @@
     <div class="row">
         {% if user.is_authenticated %}
         <div class="col-2 bg-steel" style="height:10%">
-            <a class="nav-item nav-link text-white" href="{% url 'users-profile'%}">Profile</a><br/>
+            <a class="nav-item nav-link text-white" href="{% url 'users-profile'%}"
+               style="margin-top:4px">Profile</a><br/>
             <a class="nav-item nav-link text-white" href="{% url 'users-dataset'%}">Dataset</a><br/>
             <a class="nav-item nav-link text-white" href="{% url 'users-upload' %}">upload</a><br/>
             <a class="nav-item nav-link text-white" href="{% url 'users-download' %}">download</a><br/>
@@ -85,7 +86,7 @@
             {% endif %}
             {% block content %}{% endblock %}
         </div>
-         {% if not user.is_authenticated %}
+        {% if not user.is_authenticated %}
         <div class="col-4 bg-light adjust-font-size sidebar-section" style="height:10%">
             <div class="list-group">
                 <!--<div class="content-section">-->
@@ -104,5 +105,8 @@
     </div>
 </main>
 
+<footer class="footer">
+    <center>&copy; Copyright 2017-{% now "Y" %} Dyslexia Data Consortium</center>
+</footer>
 </body>
 </html>
