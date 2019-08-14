@@ -19,9 +19,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('blog.urls')),
-    path('acc/', include('users.urls')),
+    path('dyslexia/admin/', admin.site.urls),
+    path('dyslexia/', include('blog.urls')),
+    path('dyslexia/acc/', include('users.urls')),
 ]
 
 if settings.DEBUG:
