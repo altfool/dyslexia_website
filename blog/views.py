@@ -9,10 +9,10 @@ def home(request):
         'posts': Post.objects.all()
     }
     # return render(request, 'blog/home_posts.html', context)
-    return render(request, 'blog/home.html')
+    return render(request, 'blog/home.html', {'title': 'home'})
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'about'})
 
 def contact(request):
-    return render(request, 'blog/contact.html')
+    return render(request, 'blog/contact.html', {'title': 'contact'})
