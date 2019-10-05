@@ -117,7 +117,8 @@ def download(request):
         # return redirect('users-download')
 
     context = {
-        'data': Upload.objects.all().order_by('-date_uploaded'),
+        # 'data': Upload.objects.all().order_by('-date_uploaded'),
+        'data': Upload.objects.exclude(owner=request.user).order_by('-date_uploaded'),
     }
     return render(request, 'users/download.html', context)
 
