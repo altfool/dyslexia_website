@@ -25,6 +25,7 @@ SECRET_KEY = '49328&m5=t%yartnop1@1o64(@o@32k&z@zz)0c929i_(b4dnc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#ALLOWED_HOSTS = ['130.127.49.191']
 ALLOWED_HOSTS = []
 
 
