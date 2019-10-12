@@ -1,3 +1,9 @@
 .idea/
 media/brainData/
 __pycache__
+*.pyc
+*.pyo
+*.db
+.DS_Store
+.coverage
+local_settings.py
