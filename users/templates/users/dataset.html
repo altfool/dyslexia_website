@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block extra_head %}
+<!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">-->
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<script type="text/javascript">
+function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     }
+     else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+
+function unselectAll() {
+    var checkboxes = document.getElementsByTagName('input');
+    for (var i = 0; i < checkboxes.length; i++) {
+         console.log(i);
+         if (checkboxes[i].type == 'checkbox') {
+             checkboxes[i].checked = false;
+         }
+     }
+}
+
+$(document).ready(function() {
+    <!--alert("hello world");-->
+    $('#example').DataTable({
+            <!--order: [[0, 'asc']],-->
+             "columnDefs": [
+                { "orderable": false, "targets": [5] }
+             ]
+        <!--"columns": [-->
+                    <!--{ "orderable": false },-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--null,-->
+                    <!--{ "orderable": false }-->
+<!--]-->
+    });
+} );
+
+
+</script>
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <table id="example" class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">File_Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Size/bytes</th>
+            <th scope="col">Date_upladed</th>
+            <th scope="col">Owner</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sdata in data %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <!--<th scope="row">{{ sdata.id }}</th>-->
+            <td>{{ sdata.name }}</td>
+            <td>{{ sdata.sample_age }}</td>
+            <td>{{ sdata.size }}</td>
+            <td>{{ sdata.date_uploaded }}</td>
+            <td>{{ sdata.owner }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

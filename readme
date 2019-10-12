@@ -1,0 +1,6 @@
+here i modified the templates/base.html to base_x.html
+I use my own app's templates/base.html to render this website.
+I used bootstrap4 whil mezzanine use bootstrap3 in default.
+So I quit its package and use bootstrap4. I also modified page/menu/dropdown.html, adding class="nav-item nav-link" 
+in every a tag.
+I modified pages/menus/tree.html, add a tag with class="nav-item nav-link text-white"
