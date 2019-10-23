@@ -30,7 +30,7 @@ SECRET_KEY = config['SECRET_KEY']
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['130.127.49.191']
+ALLOWED_HOSTS = ['130.127.48.155', 'dyslexia.computing.clemson.edu']
 #ALLOWED_HOSTS = []
 
 
