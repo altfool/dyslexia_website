@@ -88,8 +88,6 @@
             </div>
             {% endfor%}
             {% endif %}
-            <h1>{% block title %}{% endblock %}</h1>
-<!--            {% block content %}{% endblock %}-->
             {% block main %}{% endblock %}
         </div>
         {% if not user.is_authenticated %}
