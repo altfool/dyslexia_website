@@ -235,7 +235,6 @@ if DJANGO_VERSION < (1, 9):
 
 INSTALLED_APPS = (
     "users.apps.UsersConfig",
-    "myapp.apps.MyappConfig",
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
