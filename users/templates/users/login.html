@@ -14,7 +14,11 @@
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Need an account? <a class="ml-2" href="{% url 'signup' %}">Sign up</a> now
+                {% url "mezzanine_password_reset" as password_reset_url %}
+                {% url "profile_update" as profile_update_url %}
+                <p>Forget your password?<a class="ml-2" href="{{ password_reset_url }}?next={{ profile_update_url }}">reset it now</a></p>
+
+                <p>Need an account? <a class="ml-2" href="{% url 'signup' %}">Sign up</a> now</p>
             </small>
         </div>
     </div>
