@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+{% load crispy_forms_tags %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li>{{ title }}</li>
+{% endblock %}
+
+{% block main %}
+
+{% errors_for form %}
+
+<form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+    {% csrf_token %}
+    <fieldset>
+<!--    <legend>{{ title }}</legend>-->
+<!--    {% fields_for form %}-->
+    {{ form | crispy }}
+    <div class="form-actions">
+        {% block account_form_actions %}
+        <div class="form-group pt-3">
+            <input class="btn btn-primary btn-outline-info btn-lg pull-right" type="submit" value="{{ title }}">
+        </div>
+        {% endblock %}
+    </div>
+    </fieldset>
+</form>
+{% endblock %}

@@ -234,6 +234,7 @@ if DJANGO_VERSION < (1, 9):
 ################
 
 INSTALLED_APPS = (
+    # "registration",
     "users.apps.UsersConfig",
     "crispy_forms",
     "django.contrib.admin",
@@ -253,7 +254,7 @@ INSTALLED_APPS = (
     "mezzanine.forms",
     "mezzanine.galleries",
     "mezzanine.twitter",
-    # "mezzanine.accounts",
+    "mezzanine.accounts",
 )
 
 # List of middleware classes to use. Order is important; in the request phase,
@@ -342,3 +343,18 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+# django registration redux settings
+# ACCOUNT_ACTIVATION_DAYS = 3
+
+# mezzanine account settings
+ACCOUNTS_PROFILE_MODEL = "users.Profile"
+ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
+    # "first_name",
+    # "last_name",
+    "image",
+    "signup_date",
+)
+ACCOUNTS_VERIFICATION_REQUIRED = True
+ACCOUNTS_APPROVAL_REQUIRED = True
+

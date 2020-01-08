@@ -12,7 +12,6 @@ class UserRegisterForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
-
     class Meta:
         model = User
         # fields = ['username', 'email']
@@ -21,7 +20,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['organization', 'image']
 
 class UploadForm(forms.Form):
     brain_file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))

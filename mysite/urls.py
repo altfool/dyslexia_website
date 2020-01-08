@@ -61,6 +61,7 @@ urlpatterns += [
     # should be used if you want to customize the homepage's template.
     # NOTE: Don't forget to import the view function too!
     url("^accounts/", include("users.urls")),
+    # url(r'^accts/', include('registration.backends.default.urls')),
     url("^$", mezzanine_pages_views.page, {"slug": "/"}, name="home"),
 
     # HOMEPAGE FOR A BLOG-ONLY SITE

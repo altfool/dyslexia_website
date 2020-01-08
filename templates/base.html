@@ -63,7 +63,7 @@
                     <a class="nav-item nav-link" href="{% url 'users-logout'%}">Logout</a>
                     {% else %}
                     <a class="nav-item nav-link" href="{% url 'users-login'%}">Login</a>
-                    <a class="nav-item nav-link" href="{% url 'users-register'%}" >Register</a>
+                    <a class="nav-item nav-link" href="{% url 'signup'%}" >Sign up</a>
                     {% endif %}
                 </div>
             </div>
@@ -88,6 +88,8 @@
             </div>
             {% endfor%}
             {% endif %}
+            <h1>{% block title %}{% endblock %}</h1>
+<!--            {% block content %}{% endblock %}-->
             {% block main %}{% endblock %}
         </div>
         {% if not user.is_authenticated %}
