@@ -20,6 +20,7 @@ urlpatterns = [
     url('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='users-login'),
     url('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='users-logout'),
     url('profile/', user_views.profile, name='users-profile'),
+    url('password/change/$', user_views.change_password, name='users-change_password'),
     url('dataset/', user_views.dataset, name='users-dataset'),
     # url('upload/', user_views.upload, name='users-upload'),
     url('upload/', login_required(user_views.UploadView.as_view()), name='users-upload'),
