@@ -139,6 +139,8 @@ def download(request):
             messages.warning(request, "You Haven't Chose Any Files!")
             # return redirect('users-download')
         else:
+            messages.success(request, "Will send you email after data preparation complete."
+                                      "Please do not repeat downloading, thanks.")
             # response = HttpResponse(content_type='application/zip')
             # print(response)
             # zip_file = zipfile.ZipFile(response, 'w')
@@ -166,11 +168,9 @@ def download(request):
             # msg.attach_file(filepath, "application/zip")
             # msg.send()
 
-            messages.success(request, "Download Successfully!")
-
             # response =response.streaming
             # return response
-        # return redirect('users-download')
+        return redirect('users-download')
 
     context = {
         # 'data': Upload.objects.all().order_by('-date_uploaded'),
