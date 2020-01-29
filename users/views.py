@@ -16,8 +16,6 @@ from pathlib import Path
 import uuid, os
 from datetime import datetime
 
-# website = "dyslexia.computing.clemson.edu"
-website = "127.0.0.1:8000"
 # Create your views here.
 
 def register(request):
@@ -163,7 +161,7 @@ def download(request):
 
             mysend_email(request, "brain MRI data from Dyslexia Consortium",
                          "Congratulations. Download succeed.Please use the following link to download.",
-                            website+settings.DOWNLOAD_URL+filename)
+                            settings.MY_WEBSITE+settings.DOWNLOAD_URL+filename)
 
             # msg = EmailMessage("MRI brain data from Dyslexia Consortium", "Congratulations. Download succeeds."
             #                     "<h1><a href={}>Click Here to Download.</a></h1>".format(website+filepath),
