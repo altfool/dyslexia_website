@@ -10,8 +10,14 @@ from .models import Upload
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, UploadForm
 from django.http import FileResponse, HttpResponse
 import zipfile
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+from mezzanine.conf import settings
+from pathlib import Path
 import uuid
+from datetime import datetime
 
+# website = "dyslexia.computing.clemson.edu/"
+website = "127.0.0.1:8000/"
 # Create your views here.
 
 def register(request):
@@ -114,6 +120,14 @@ class UploadView(FormView):
         else:
             return self.form_invalid(form)
 
+def mysend_email(request, subject, content, link):
+    from_email, to = settings.DEFAULT_FROM_EMAIL, request.user.email
+    text_content = "dyslexia consortium"
+    html_content = '<html><h>{}</h><body><a href="http://{}">Click Here</a></body></html>'.format(content, link)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send(fail_silently=True)
+
 @login_required
 def download(request):
     response = None
@@ -123,21 +137,40 @@ def download(request):
         print(checked_id)
         if checked_id == []:
             messages.warning(request, "You Haven't Chose Any Files!")
-            return redirect('users-download')
+            # return redirect('users-download')
         else:
-            response = HttpResponse(content_type='application/zip')
+            messages.success(request, "Will send you email after data preparation complete."
+                                      "Please do not repeat downloading, thanks.")
+            # response = HttpResponse(content_type='application/zip')
             # print(response)
-            zip_file = zipfile.ZipFile(response, 'w')
+            # zip_file = zipfile.ZipFile(response, 'w')
+            date_time = datetime.now().strftime("%m%d%Y%H%M%S")
+            filepath = "static/media/download/" + "%s%s_%s_%s" % (request.user.username, request.user.id, date_time,
+                                                                  uuid.uuid4())+".zip"
+            print(filepath)
+            # print(Path.cwd())
+            zip_file = zipfile.ZipFile(filepath, "w")
+
             for idx in checked_id:
                 obj = Upload.objects.get(pk=idx).brain_file
                 print(obj.name)
-                zip_file.write(obj.path, obj.name)
-            response['Content-Disposition'] = 'attachment; filename=dyslexia_data'
+                zip_file.write(obj.path, obj.name, zipfile.ZIP_DEFLATED)
+            # response['Content-Disposition'] = 'attachment; filename=dyslexia_data'
             zip_file.close()
-            # messages.success(request, "Download Successfully!")
+
+            mysend_email(request, "brain MRI data from Dyslexia Consortium",
+                         "Congratulations. Download succeed.Please use the following link to download.",
+                            website+filepath)
+
+            # msg = EmailMessage("MRI brain data from Dyslexia Consortium", "Congratulations. Download succeeds."
+            #                     "<h1><a href={}>Click Here to Download.</a></h1>".format(website+filepath),
+            #                    to=[request.user.email]); msg.content_subtype = "html";
+            # msg.attach_file(filepath, "application/zip")
+            # msg.send()
+
             # response =response.streaming
-            return response
-        # return redirect('users-download')
+            # return response
+        return redirect('users-download')
 
     context = {
         # 'data': Upload.objects.all().order_by('-date_uploaded'),

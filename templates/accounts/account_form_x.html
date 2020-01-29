@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+{% load crispy_forms_tags %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li>{{ title }}</li>
+{% endblock %}
+
+{% block main %}
+
+{% errors_for form %}
+
+<form method="post" id="signupForm" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+    {% csrf_token %}
+    <fieldset>
+    {{ form | crispy }}
+    <div class="form-actions">
+        {% block account_form_actions %}
+        <div class="form-group pt-3">
+            <p><input type="checkbox" name="terms" value="1" /> Please check the box to signify agreement with our <a href="/irb-rules" target="_blank"><b>IRB</b> terms</a>.</p>
+            <input class="btn btn-primary btn-outline-info btn-lg pull-right" type="submit" value="{{ title }}">
+        </div>
+        {% endblock %}
+    </div>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+// to remove fn's from global namespace
+(function() {
+
+    // assign anonymous function to onsubmit property of form
+    document.getElementById('signupForm').onsubmit = function() {
+        // get reference to terms checkbox
+        var terms = this.elements['terms'];
+
+        if ( !terms.checked ) {
+            // display error info, generally not an alert these days
+            alert( 'Please signify your agreement with our terms.' );
+            return false; //  don't submit
+        }
+
+
+        // for online demo
+        // alert( 'I would submit now, but for this demo, there\'s nowhere to go.' );
+        // return false;
+
+        return true; // submit
+    };
+}());
+</script>
+{% endblock %}
