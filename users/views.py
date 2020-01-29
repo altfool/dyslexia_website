@@ -13,11 +13,11 @@ import zipfile
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from mezzanine.conf import settings
 from pathlib import Path
-import uuid
+import uuid, os
 from datetime import datetime
 
-# website = "dyslexia.computing.clemson.edu/"
-website = "127.0.0.1:8000/"
+# website = "dyslexia.computing.clemson.edu"
+website = "127.0.0.1:8000"
 # Create your views here.
 
 def register(request):
@@ -145,8 +145,10 @@ def download(request):
             # print(response)
             # zip_file = zipfile.ZipFile(response, 'w')
             date_time = datetime.now().strftime("%m%d%Y%H%M%S")
-            filepath = "static/media/download/" + "%s%s_%s_%s" % (request.user.username, request.user.id, date_time,
+            filename = "%s%s_%s_%s" % (request.user.username, request.user.id, date_time,
                                                                   uuid.uuid4())+".zip"
+            # filepath = "static/media/download/" + filename
+            filepath = os.path.join(settings.DOWNLOAD_ROOT, filename)
             print(filepath)
             # print(Path.cwd())
             zip_file = zipfile.ZipFile(filepath, "w")
@@ -160,7 +162,7 @@ def download(request):
 
             mysend_email(request, "brain MRI data from Dyslexia Consortium",
                          "Congratulations. Download succeed.Please use the following link to download.",
-                            website+filepath)
+                            website+settings.DOWNLOAD_URL+filename)
 
             # msg = EmailMessage("MRI brain data from Dyslexia Consortium", "Congratulations. Download succeeds."
             #                     "<h1><a href={}>Click Here to Download.</a></h1>".format(website+filepath),
