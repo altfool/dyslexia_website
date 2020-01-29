@@ -1,5 +1,5 @@
 .idea/
-media/brainData/
+static/media/brainData/*
 __pycache__
 *.pyc
 *.pyo
