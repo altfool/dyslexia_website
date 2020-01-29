@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from django.utils import timezone
+from datetime import datetime, timedelta
+
+def get_default_my_date():
+    return timezone.localtime(timezone.now())
+
 
 # Create your models here.
 
@@ -27,7 +32,7 @@ class Upload(models.Model):
     name = models.CharField(null=True, max_length=100)
     sample_age = models.IntegerField(null=True)
     size = models.IntegerField(null=True)
-    date_uploaded = models.DateTimeField(default=timezone.now)
+    date_uploaded = models.DateTimeField(default=get_default_my_date)
     brain_file = models.FileField(upload_to="brainData/")
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     

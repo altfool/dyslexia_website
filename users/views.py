@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import FormView
-from .models import Upload
+from .models import Upload, get_default_my_date
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, UploadForm
 from django.http import FileResponse, HttpResponse
 import zipfile
@@ -144,7 +144,8 @@ def download(request):
             # response = HttpResponse(content_type='application/zip')
             # print(response)
             # zip_file = zipfile.ZipFile(response, 'w')
-            date_time = datetime.now().strftime("%m%d%Y%H%M%S")
+            date_time = get_default_my_date().strftime("%m%d%Y%H%M%S")
+            print(date_time)
             filename = "%s%s_%s_%s" % (request.user.username, request.user.id, date_time,
                                                                   uuid.uuid4())+".zip"
             # filepath = "static/media/download/" + filename
