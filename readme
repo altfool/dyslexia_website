@@ -1,3 +1,6 @@
+### A website for dyslexia data-sharing platform. It implements the sign in/up, data upload/download functiionality.
+
+Details
 here i modified the templates/base.html to base_x.html
 I use my own app's templates/base.html to render this website.
 I used bootstrap4 whil mezzanine use bootstrap3 in default.
