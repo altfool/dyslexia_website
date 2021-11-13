@@ -1,4 +1,4 @@
-### A website for dyslexia data-sharing platform. It implements the sign in/up, data upload/download functiionality.
+A website for dyslexia data-sharing platform. It implements the sign in/up, data upload/download functiionality.
 
 Details
 here i modified the templates/base.html to base_x.html
